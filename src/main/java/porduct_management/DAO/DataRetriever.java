@@ -23,7 +23,7 @@ public class DataRetriever {
 
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT * FROM category";
+        String sql = "SELECT * FROM product_category";
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);

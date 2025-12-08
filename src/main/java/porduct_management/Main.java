@@ -1,4 +1,4 @@
-package porduct_management.test;
+package porduct_management;
 
 import porduct_management.DAO.DataRetriever;
 import porduct_management.model.Category;

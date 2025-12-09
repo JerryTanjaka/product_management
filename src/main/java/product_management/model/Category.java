@@ -1,4 +1,4 @@
-package porduct_management.model;
+package product_management.model;
 
 public class Category {
     private int id;

@@ -1,4 +1,4 @@
-package porduct_management.util;
+package product_management.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

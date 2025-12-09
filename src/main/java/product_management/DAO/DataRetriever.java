@@ -1,8 +1,8 @@
-package porduct_management.DAO;
+package product_management.DAO;
 
-import porduct_management.model.Category;
-import porduct_management.model.Product;
-import porduct_management.util.DBConnection;
+import product_management.model.Category;
+import product_management.model.Product;
+import product_management.util.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DataRetriever {
     private DBConnection dbConnection;

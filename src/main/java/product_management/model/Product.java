@@ -1,4 +1,4 @@
-package porduct_management.model;
+package product_management.model;
 
 import java.time.Instant;
 

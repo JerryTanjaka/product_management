@@ -1,9 +1,8 @@
-package porduct_management;
+package product_management;
 
-import porduct_management.DAO.DataRetriever;
-import porduct_management.model.Product;
-import porduct_management.model.Category;
-import porduct_management.util.DBConnection;
+import product_management.DAO.DataRetriever;
+import product_management.model.Category;
+import product_management.util.DBConnection;
 
 import java.sql.SQLException;
 import java.time.Instant;

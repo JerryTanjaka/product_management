@@ -1,11 +1,13 @@
 package porduct_management.DAO;
 
 import porduct_management.model.Category;
+import porduct_management.model.Product;
 import porduct_management.util.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class DataRetriever {
 
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT id, name FROM product_category";
+        String sql = "SELECT id, name,product_id FROM product_category";
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);
@@ -41,5 +43,44 @@ public class DataRetriever {
             e.printStackTrace();
         }
         return categories;
+    }public List<Product> getProductList(int page, int size) {
+        List<Product> products = new ArrayList<>();
+
+        String sql = """
+        SELECT p.id,p.name,p.creation_datetime,c.id AS category_id,c.name AS category_name,c.product_id
+        FROM product p
+        LEFT JOIN product_category c ON p.id = c.product_id
+        ORDER BY p.id
+        LIMIT ? OFFSET ?
+        """;
+
+        try (
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, size);
+            statement.setInt(2, (page - 1) * size);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    Instant creationDatetime = rs.getTimestamp("creation_datetime").toInstant();
+
+                    int categoryId = rs.getInt("category_id");
+                    String categoryName = rs.getString("category_name");
+                    int productId = rs.getInt("product_id");
+
+                    Category category = new Category(categoryId, categoryName, productId);
+                    Product product = new Product(id, name, creationDatetime, category);
+
+                    products.add(product);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
     }
+
 }

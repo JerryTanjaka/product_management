@@ -7,9 +7,11 @@ import porduct_management.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataRetriever {
     private DBConnection dbConnection;
@@ -43,16 +45,18 @@ public class DataRetriever {
             e.printStackTrace();
         }
         return categories;
-    }public List<Product> getProductList(int page, int size) {
+    }
+
+    public List<Product> getProductList(int page, int size) {
         List<Product> products = new ArrayList<>();
 
         String sql = """
-        SELECT p.id,p.name,p.creation_datetime,c.id AS category_id,c.name AS category_name,c.product_id
-        FROM product p
-        LEFT JOIN product_category c ON p.id = c.product_id
-        ORDER BY p.id
-        LIMIT ? OFFSET ?
-        """;
+                SELECT p.id,p.name,p.creation_datetime,c.id AS category_id,c.name AS category_name,c.product_id
+                FROM product p
+                LEFT JOIN product_category c ON p.id = c.product_id
+                ORDER BY p.id
+                LIMIT ? OFFSET ?
+                """;
 
         try (
                 Connection connection = getConnection();
@@ -81,17 +85,19 @@ public class DataRetriever {
             e.printStackTrace();
         }
         return products;
-    }public List<Product> getProductsByCriteria(String productName, String categoryName, Instant creationMin, Instant creationMax
+    }
+
+    public List<Product> getProductsByCriteria(String productName, String categoryName, Instant creationMin, Instant creationMax
     ) {
         List<Product> products = new ArrayList<>();
         List<String> conditions = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
         String baseSql = """
-            SELECT p.id, p.name, p.creation_datetime,c.id AS category_id, c.name AS category_name, c.product_id
-            FROM product p
-            LEFT JOIN product_category c ON p.id = c.product_id
-            """;
+                SELECT p.id, p.name, p.creation_datetime,c.id AS category_id, c.name AS category_name, c.product_id
+                FROM product p
+                LEFT JOIN product_category c ON p.id = c.product_id
+                """;
 
         if (productName != null) {
             conditions.add("p.name ILIKE ?");
@@ -149,5 +155,10 @@ public class DataRetriever {
         return products;
     }
 
-
+    public List<Product> getProductsByCriteria(
+            String productName, String categoryName, Instant creationMin, Instant creationMax, int page, int size
+    ) throws SQLException {
+        List<Product> allFilteredProducts = getProductsByCriteria(productName, categoryName, creationMin, creationMax);
+        return allFilteredProducts.stream().skip((long)size * (page - 1)).limit(size).toList();
+    }
 }

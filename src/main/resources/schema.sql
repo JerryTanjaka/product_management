@@ -1,4 +1,3 @@
-psql -U product_manager_user -d product_management_db
 
 CREATE TABLE Product (
     id SERIAL PRIMARY KEY,

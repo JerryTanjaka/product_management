@@ -50,7 +50,7 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    String getCategoryName() {
+    public String getCategoryName() {
         return category.getName();
     }
     @Override

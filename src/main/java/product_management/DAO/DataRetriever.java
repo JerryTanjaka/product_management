@@ -19,11 +19,11 @@ public class DataRetriever {
         this.dbConnection = dbConnection;
     }
 
-    private Connection getConnection() {
+    private Connection getConnection()  throws SQLException {
         return dbConnection.getDBConnection();
     }
 
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories() throws SQLException  {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT id, name,product_id FROM product_category";
         try (
@@ -40,13 +40,13 @@ public class DataRetriever {
                 categories.add(category);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
         return categories;
     }
 
-    public List<Product> getProductList(int page, int size) {
+    public List<Product> getProductList(int page, int size) throws SQLException  {
         List<Product> products = new ArrayList<>();
 
         String sql = """
@@ -80,14 +80,13 @@ public class DataRetriever {
                     products.add(product);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return products;
-    }
+    } catch (SQLException e) {
+        throw new SQLException(e);
+        }return products;
+}
 
     public List<Product> getProductsByCriteria(String productName, String categoryName, Instant creationMin, Instant creationMax
-    ) {
+    ) throws SQLException{
         List<Product> products = new ArrayList<>();
         List<String> conditions = new ArrayList<>();
         List<Object> params = new ArrayList<>();
@@ -147,10 +146,9 @@ public class DataRetriever {
 
                 products.add(product);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
-
         return products;
     }
 

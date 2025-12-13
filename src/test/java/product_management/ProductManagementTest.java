@@ -5,6 +5,7 @@ import product_management.model.Category;
 import product_management.model.Product;
 import product_management.util.DBConnection;
 
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ProductManagementTest {
     private final DataRetriever retriever = new DataRetriever(new DBConnection());
 
     @Test
-    void testGetAllCategories() {
+    void testGetAllCategories() throws SQLException {
         List<Category> categories = retriever.getAllCategories();
 
         assertEquals(7, categories.size(), "Should return 7 categories");

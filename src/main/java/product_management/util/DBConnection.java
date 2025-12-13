@@ -8,12 +8,11 @@ public class DBConnection {
      final String URL = "jdbc:postgresql://localhost:5432/product_management_db";
      final String USER = "product_manager_user";
      final String PASSWORD = "123456";
-    public  Connection getDBConnection() {
+    public  Connection getDBConnection() throws SQLException {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new SQLException(e);
         }
     }
 }

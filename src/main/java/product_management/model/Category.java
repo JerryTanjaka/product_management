@@ -1,5 +1,7 @@
 package product_management.model;
 
+import java.util.Objects;
+
 public class Category {
     private int id;
     private String name;
@@ -38,6 +40,18 @@ public class Category {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return id == category.id && productId == category.productId && Objects.equals(name, category.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, productId);
     }
 
     @Override
